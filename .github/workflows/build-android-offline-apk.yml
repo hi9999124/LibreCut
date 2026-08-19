@@ -27,7 +27,10 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: "17"
+          # @capacitor/android's own build.gradle sets sourceCompatibility/
+          # targetCompatibility to 21; anything older fails with
+          # "invalid source release: 21" at compileDebugJavaWithJavac.
+          java-version: "21"
 
       - name: Build static export and sync into the native Android project
         run: bash scripts/build-android-offline.sh
