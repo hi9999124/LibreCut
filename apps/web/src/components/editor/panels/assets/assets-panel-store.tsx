@@ -2,6 +2,7 @@ import type { ElementType } from "react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import {
+	AiVideoIcon,
 	ArrowRightDoubleIcon,
 	ClosedCaptionIcon,
 	Folder03Icon,
@@ -20,6 +21,7 @@ export const TAB_KEYS = [
 	"sounds",
 	"text",
 	"stickers",
+	"ai",
 	"effects",
 	"transitions",
 	"captions",
@@ -51,6 +53,10 @@ export const tabs = {
 	stickers: {
 		icon: createHugeiconsIcon({ icon: Happy01Icon }),
 		label: "Stickers",
+	},
+	ai: {
+		icon: createHugeiconsIcon({ icon: AiVideoIcon }),
+		label: "AI video",
 	},
 	effects: {
 		icon: createHugeiconsIcon({ icon: MagicWand05Icon }),

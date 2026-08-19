@@ -248,11 +248,6 @@ export function TimelineElement({
 
 	const hasAudio = mediaSupportsAudio({ media: mediaAsset });
 
-	const isCurrentElementSelected = selectedElements.some(
-		(selected) =>
-			selected.elementId === element.id && selected.trackId === track.id,
-	);
-
 	const isDragging = dragView.kind === "dragging";
 	const dragTimeOffset = isDragging
 		? dragView.memberTimeOffsets.get(element.id)
@@ -338,7 +333,7 @@ export function TimelineElement({
 	const isMuted = canElementHaveAudio(element) && isElementMuted({ element });
 	const canToggleCurrentSourceAudio =
 		selectedElements.length === 1 &&
-		isCurrentElementSelected &&
+		isSelected &&
 		canToggleSourceAudio(element, mediaAsset);
 	const sourceAudioLabel =
 		element.type === "video"
@@ -441,7 +436,7 @@ export function TimelineElement({
 					{canElementHaveAudio(element) && hasAudio && (
 						<MuteMenuItem
 							isMultipleSelected={selectedElements.length > 1}
-							isCurrentElementSelected={isCurrentElementSelected}
+							isCurrentElementSelected={isSelected}
 							isMuted={isMuted}
 						/>
 					)}
@@ -466,7 +461,7 @@ export function TimelineElement({
 						<VisibilityMenuItem
 							element={element}
 							isMultipleSelected={selectedElements.length > 1}
-							isCurrentElementSelected={isCurrentElementSelected}
+							isCurrentElementSelected={isSelected}
 						/>
 					)}
 					{hasKeyframes && (
@@ -501,7 +496,7 @@ export function TimelineElement({
 					<ContextMenuSeparator />
 					<DeleteMenuItem
 						isMultipleSelected={selectedElements.length > 1}
-						isCurrentElementSelected={isCurrentElementSelected}
+						isCurrentElementSelected={isSelected}
 						elementType={element.type}
 						selectedCount={selectedElements.length}
 					/>

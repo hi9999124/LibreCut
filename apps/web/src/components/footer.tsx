@@ -33,7 +33,11 @@ const links: CategoryLinks = {
 
 export function Footer() {
 	return (
-		<footer className="bg-background border-t">
+		<footer className="bg-background relative border-t">
+			<div
+				aria-hidden
+				className="via-primary/40 pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent to-transparent"
+			/>
 			<div className="mx-auto max-w-5xl px-8 py-10">
 				<div className="mb-8 grid grid-cols-1 gap-12 md:grid-cols-2">
 					{/* Brand Section */}
@@ -41,15 +45,16 @@ export function Footer() {
 						<div className="mb-4 flex items-center justify-start gap-2">
 							<Image
 								src={DEFAULT_LOGO_URL}
-								alt="OpenCut"
+								alt="LibreCut"
 								width={24}
 								height={24}
 								className="invert dark:invert-0"
 							/>
-							<span className="text-lg font-bold">OpenCut</span>
+							<span className="text-lg font-bold">LibreCut</span>
 						</div>
 						<p className="text-muted-foreground mb-5 text-sm md:text-left">
-							The privacy-first video editor that feels simple to use.
+							The free, open-source video editor — every feature unlocked,
+							bring your own AI key.
 						</p>
 						<div className="flex justify-start gap-3">
 							<Link
@@ -114,7 +119,7 @@ export function Footer() {
 				<div className="flex flex-col items-start justify-between gap-4 pt-2 md:flex-row">
 					<div className="text-muted-foreground flex items-center gap-4 text-sm">
 						<span>
-							© {new Date().getFullYear()} OpenCut, All Rights Reserved
+							© {new Date().getFullYear()} LibreCut, All Rights Reserved
 						</span>
 					</div>
 				</div>

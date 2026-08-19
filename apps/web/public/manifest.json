@@ -1,8 +1,12 @@
 {
-	"name": "OpenCut",
-	"description": "A simple but powerful video editor that gets the job done. In your browser.",
+	"name": "LibreCut",
+	"short_name": "LibreCut",
+	"description": "The free, open-source video editor. Every feature unlocked, bring your own AI key.",
 	"display": "standalone",
 	"start_url": "/",
+	"scope": "/",
+	"theme_color": "#000000",
+	"background_color": "#000000",
 	"icons": [
 		{
 			"src": "/icons/android-icon-36x36.png",
