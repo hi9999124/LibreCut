@@ -39,6 +39,7 @@ rm -rf src/app/rss.xml
 echo "==> Applying Android build overrides"
 cp "$REPO_ROOT/apps/mobile-android/overrides/page.tsx" src/app/page.tsx
 cp "$REPO_ROOT/apps/mobile-android/overrides/next.config.ts" next.config.ts
+cp "$REPO_ROOT/apps/mobile-android/overrides/editor-path.ts" src/project/editor-path.ts
 
 echo "==> Installing dependencies (pinned to the committed bun.lock)"
 bun install --frozen-lockfile

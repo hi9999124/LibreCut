@@ -1,6 +1,7 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { Suspense } from "react";
+import { useParams, useSearchParams } from "next/navigation";
 import {
 	ResizablePanelGroup,
 	ResizablePanel,
@@ -36,8 +37,26 @@ import {
 } from "@/timeline/bookmarks/index";
 
 export function EditorClient() {
+	return (
+		<Suspense fallback={null}>
+			<EditorClientWithProjectId />
+		</Suspense>
+	);
+}
+
+/**
+ * A static export can only pre-render one path per dynamic segment (see
+ * generateStaticParams in ./page.tsx), so the offline Android build
+ * navigates everyone to that one path and passes the real project id as a
+ * `?id=` query param instead -- see apps/mobile-android/overrides and
+ * @/project/editor-path. The normal web app never sets that param, so this
+ * just falls back to the real path segment there. useSearchParams() needs
+ * a Suspense boundary for `output: "export"` to build at all.
+ */
+function EditorClientWithProjectId() {
 	const params = useParams();
-	const projectId = params.project_id as string;
+	const searchParams = useSearchParams();
+	const projectId = searchParams.get("id") ?? (params.project_id as string);
 
 	return (
 		<MobileGate>

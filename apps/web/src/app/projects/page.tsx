@@ -15,6 +15,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEditor } from "@/editor/use-editor";
+import { buildEditorPath } from "@/project/editor-path";
 import { useProjectsStore } from "./store";
 import type {
 	TProjectMetadata,
@@ -512,7 +513,7 @@ function NewProjectButton() {
 		const projectId = await editor.project.createNewProject({
 			name: "New project",
 		});
-		router.push(`/editor/${projectId}`);
+		router.push(buildEditorPath({ projectId }));
 	};
 
 	return (
@@ -664,7 +665,7 @@ function ProjectItem({
 				className="size-5 shrink-0"
 			/>
 
-			<Link href={`/editor/${project.id}`} className="flex-1 min-w-0">
+			<Link href={buildEditorPath({ projectId: project.id })} className="flex-1 min-w-0">
 				{listRowContent}
 			</Link>
 
@@ -689,7 +690,7 @@ function ProjectItem({
 					<div className="group relative">
 						{isGridView ? (
 							<>
-								<Link href={`/editor/${project.id}`} className="block">
+								<Link href={buildEditorPath({ projectId: project.id })} className="block">
 									{gridContent}
 								</Link>
 
@@ -958,7 +959,7 @@ function EmptyState() {
 			const projectId = await editor.project.createNewProject({
 				name: "New project",
 			});
-			router.push(`/editor/${projectId}`);
+			router.push(buildEditorPath({ projectId }));
 		} catch (error) {
 			toast.error("Failed to create project", {
 				description:
