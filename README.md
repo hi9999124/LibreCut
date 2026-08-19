@@ -1,8 +1,12 @@
-# OpenCut (Legacy)
+# LibreCut
 
-This is the original OpenCut codebase. It's archived and no longer maintained.
+**LibreCut** is a free, open-source fork of [OpenCut](https://github.com/opencut-app/opencut) — a privacy-first, browser-based video editor. Your videos never leave your device, every editing feature is unlocked for everyone, and when you want AI video generation you bring your own API key instead of paying us for it.
 
-The rewrite is happening at [opencut-app/opencut](https://github.com/opencut-app/opencut).
+## What's different in this fork
+
+- **Nothing paywalled** — no pro tier, no watermarks, no feature gating. Everything OpenCut can do, LibreCut does too, for free.
+- **Bring your own AI key** — a new **AI video** panel in the editor lets you generate clips (text-to-video and image-to-video, including ByteDance's Seedance models) through [fal.ai](https://fal.ai). Add your own fal.ai API key under **Settings → AI**; it's stored only in your browser and calls fal.ai directly, so LibreCut never sees your key or your generation costs. See [Generating AI video](#generating-ai-video) below.
+- **Performance-minded** — ongoing work to cut unnecessary re-renders and recomputation in the timeline and preview so the editor stays smooth on longer projects.
 
 ## Sponsors
 
@@ -19,7 +23,7 @@ Thanks to [Vercel](https://vercel.com?utm_source=github-opencut&utm_campaign=oss
 ## Why?
 
 - **Privacy**: Your videos stay on your device
-- **Free features**: Most basic CapCut features are now paywalled 
+- **Free**: Every feature is free — no paywalled tiers, ever
 - **Simple**: People want editors that are easy to use - CapCut proved that
 
 ## Project Structure
@@ -135,6 +139,13 @@ docker compose up -d
 
 The app will be available at [http://localhost:3100](http://localhost:3100).
 
+## Generating AI video
+
+1. Get an API key from [fal.ai/dashboard/keys](https://fal.ai/dashboard/keys) (fal.ai bills you directly for what you generate).
+2. In the editor, open the **Settings** tab in the assets panel and switch to **AI**, then paste your key. It's saved only in your browser's local storage.
+3. Open the **AI video** tab, choose text-to-video or image-to-video, write a prompt, and hit **Generate video**. Finished clips are imported straight into your media library and can be added to the timeline with one click.
+4. Only a couple of models are pinned by default (Seedance 1.0 Pro). fal.ai's catalog moves fast, so pick **Custom model…** and paste any model path from [fal.ai/models](https://fal.ai/models) — including newer Seedance releases — to use it instead.
+
 ## Contributing
 
 We welcome contributions! While we're actively developing and refactoring certain areas, there are plenty of opportunities to contribute effectively.
@@ -158,5 +169,5 @@ See our [Contributing Guide](.github/CONTRIBUTING.md) for detailed setup instruc
 
 ---
 
-![Star History Chart](https://api.star-history.com/svg?repos=opencut-app/opencut&type=Date)
+LibreCut is an independent fork and isn't affiliated with the OpenCut project — huge thanks to the OpenCut team and contributors for the codebase this builds on.
 
