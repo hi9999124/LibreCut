@@ -416,12 +416,15 @@ export function AiGenerationView() {
 			<Section showTopBorder={false} showBottomBorder={false} className="flex-1">
 				<SectionContent className="flex flex-col gap-4 pt-1">
 					{!hasApiKey && (
-						<div className="border-border bg-accent/50 flex items-start gap-2 rounded-md border p-3">
-							<HugeiconsIcon
-								icon={AiVideoIcon}
-								className="text-muted-foreground mt-0.5 size-4 shrink-0"
+						<div className="border-primary/20 from-primary/10 relative flex items-start gap-2.5 overflow-hidden rounded-md border bg-linear-to-br to-transparent p-3">
+							<div
+								aria-hidden
+								className="bg-primary/25 pointer-events-none absolute -top-8 -right-8 size-24 rounded-full blur-2xl"
 							/>
-							<div className="flex flex-col gap-1.5">
+							<div className="bg-primary/15 text-primary relative flex size-8 shrink-0 items-center justify-center rounded-full">
+								<HugeiconsIcon icon={AiVideoIcon} className="size-4" />
+							</div>
+							<div className="relative flex flex-col gap-1.5">
 								<p className="text-sm">
 									Generate video with your own fal.ai key — it never touches
 									LibreCut&apos;s servers.
@@ -429,7 +432,7 @@ export function AiGenerationView() {
 								<Button
 									size="sm"
 									variant="outline"
-									className="w-fit"
+									className="bg-background/70 w-fit"
 									onClick={() => setActiveTab("settings")}
 								>
 									Add API key
@@ -625,7 +628,7 @@ export function AiGenerationView() {
 					<div className="flex items-center gap-2">
 						<Button
 							type="button"
-							className="flex-1"
+							className="flex-1 shadow-[0_4px_20px_-6px_var(--primary)] disabled:shadow-none"
 							onClick={handleGenerate}
 							disabled={isGenerating}
 						>
@@ -660,9 +663,9 @@ export function AiGenerationView() {
 								{history.map((clip) => (
 									<div
 										key={clip.id}
-										className="border-border flex items-center gap-2 rounded-md border p-2"
+										className="border-border hover:border-primary/40 hover:bg-accent/40 flex items-center gap-2 rounded-md border p-2 transition-colors"
 									>
-										<div className="bg-muted relative size-12 shrink-0 overflow-hidden rounded-sm">
+										<div className="bg-muted ring-border relative size-12 shrink-0 overflow-hidden rounded-sm ring-1">
 											{clip.thumbnailUrl && (
 												<Image
 													src={clip.thumbnailUrl}
@@ -705,9 +708,15 @@ export function AiGenerationView() {
 					)}
 
 					{history.length === 0 && !isGenerating && (
-						<div className="text-muted-foreground flex flex-1 flex-col items-center justify-center gap-2 py-10 text-center text-sm">
-							<HugeiconsIcon icon={AiVideoIcon} className="size-6 opacity-50" />
-							<span>Generated clips will show up here</span>
+						<div className="text-muted-foreground relative flex flex-1 flex-col items-center justify-center gap-2 overflow-hidden py-10 text-center text-sm">
+							<div
+								aria-hidden
+								className="bg-primary/10 pointer-events-none absolute size-32 rounded-full blur-3xl"
+							/>
+							<div className="border-border bg-accent/40 relative flex size-11 items-center justify-center rounded-full border">
+								<HugeiconsIcon icon={AiVideoIcon} className="size-5" />
+							</div>
+							<span className="relative">Generated clips will show up here</span>
 						</div>
 					)}
 				</SectionContent>

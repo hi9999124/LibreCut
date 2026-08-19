@@ -14,11 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useAiSettingsStore } from "@/ai/ai-settings-store";
 import { HugeiconsIcon } from "@hugeicons/react";
-import {
-	CheckmarkCircle02Icon,
-	Key01Icon,
-	LinkSquare02Icon,
-} from "@hugeicons/core-free-icons";
+import { Key01Icon, LinkSquare02Icon } from "@hugeicons/core-free-icons";
 
 export function AiKeysSettings() {
 	const falApiKey = useAiSettingsStore((s) => s.falApiKey);
@@ -46,12 +42,17 @@ export function AiKeysSettings() {
 			<Section showTopBorder={false}>
 				<SectionHeader>
 					<SectionTitle className="flex items-center gap-2">
-						<HugeiconsIcon icon={Key01Icon} className="size-4" />
+						<span className="bg-primary/15 text-primary flex size-6 items-center justify-center rounded-full">
+							<HugeiconsIcon icon={Key01Icon} className="size-3.5" />
+						</span>
 						fal.ai API key
 					</SectionTitle>
 					{hasSavedKey && (
-						<span className="text-constructive flex items-center gap-1 text-xs">
-							<HugeiconsIcon icon={CheckmarkCircle02Icon} className="size-3.5" />
+						<span className="text-constructive flex items-center gap-1.5 text-xs">
+							<span className="relative flex size-2">
+								<span className="bg-constructive absolute inline-flex size-full animate-ping rounded-full opacity-75" />
+								<span className="bg-constructive relative inline-flex size-2 rounded-full" />
+							</span>
 							Connected
 						</span>
 					)}
@@ -81,6 +82,7 @@ export function AiKeysSettings() {
 					<div className="flex items-center gap-2">
 						<Button
 							size="sm"
+							className="shadow-[0_4px_16px_-6px_var(--primary)] disabled:shadow-none"
 							onClick={handleSave}
 							disabled={!isDirty || draftKey.trim().length === 0}
 						>

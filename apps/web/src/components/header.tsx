@@ -49,16 +49,19 @@ export function Header() {
 	];
 
 	return (
-		<header className="bg-background shadow-background/85 sticky top-0 z-10 shadow-[0_30px_35px_15px_rgba(0,0,0,1)]">
+		<header className="bg-background/70 shadow-background/85 border-foreground/10 sticky top-0 z-10 border-b shadow-[0_30px_35px_15px_rgba(0,0,0,1)] backdrop-blur-xl">
 			<div className="relative flex w-full items-center justify-between px-6 pt-4">
 				<div className="relative z-10 flex items-center gap-6">
 					<ContextMenu>
 						<ContextMenuTrigger asChild>
-							<Link href="/" className="flex items-center gap-3">
+							<Link
+								href="/"
+								className="group flex items-center gap-3 transition-transform duration-200 hover:scale-105"
+							>
 								<Image
 									src={DEFAULT_LOGO_URL}
-									alt="OpenCut Logo"
-									className="invert dark:invert-0"
+									alt="LibreCut Logo"
+									className="invert transition-[filter] duration-200 group-hover:drop-shadow-[0_0_10px_var(--primary)] dark:invert-0"
 									width={32}
 									height={32}
 								/>
@@ -79,7 +82,7 @@ export function Header() {
 								onClick={() => {
 									const a = document.createElement("a");
 									a.href = DEFAULT_LOGO_URL;
-									a.download = "opencut-logo.svg";
+									a.download = "librecut-logo.svg";
 									a.click();
 								}}
 							>
@@ -118,14 +121,17 @@ export function Header() {
 						</Button>
 					</div>
 					<div className="hidden items-center gap-3 md:flex">
-						<Link href={SOCIAL_LINKS.github}>
-							<Button className="bg-background text-sm" variant="outline">
+						<Link href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer">
+							<Button
+								className="bg-background/60 text-sm backdrop-blur-md"
+								variant="outline"
+							>
 								<HugeiconsIcon icon={GithubIcon} className="size-4" />
-								40k+
+								Star on GitHub
 							</Button>
 						</Link>
 						<Link href="/projects">
-							<Button className="text-sm">
+							<Button className="text-sm shadow-[0_4px_20px_-6px_var(--primary)]">
 								Projects
 								<ArrowRight className="size-4" />
 							</Button>
@@ -135,7 +141,7 @@ export function Header() {
 				</div>
 				<div
 					className={cn(
-						"bg-background/20 pointer-events-none fixed inset-0 opacity-0 backdrop-blur-3xl",
+						"bg-background/40 pointer-events-none fixed inset-0 opacity-0 backdrop-blur-2xl",
 						"transition-opacity duration-150",
 						isMenuOpen && "pointer-events-auto opacity-100",
 					)}

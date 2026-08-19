@@ -62,13 +62,20 @@ export function TabBar() {
 									size="icon"
 									aria-label={tab.label}
 									className={cn(
-										"shrink-0",
+										"relative shrink-0",
 										"h-8 w-8",
 										activeTab !== tabKey && "text-muted-foreground",
+										tabKey === "ai" && activeTab === tabKey && "text-primary",
 									)}
 									onClick={() => setActiveTab(tabKey)}
 								>
 									<tab.icon />
+									{tabKey === "ai" && activeTab !== tabKey && (
+										<span
+											aria-hidden
+											className="bg-primary absolute top-1 right-1 size-1.5 rounded-full"
+										/>
+									)}
 								</Button>
 							</TooltipTrigger>
 							<TooltipContent

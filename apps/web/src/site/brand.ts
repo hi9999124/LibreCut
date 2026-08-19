@@ -1,9 +1,9 @@
 export const SITE_URL = "https://opencut.app";
 
 export const SITE_INFO = {
-	title: "OpenCut",
+	title: "LibreCut",
 	description:
-		"A simple but powerful video editor that gets the job done. In your browser.",
+		"The free, open-source video editor. Every feature unlocked, your videos stay on your device, and AI video generation runs on your own API key.",
 	url: SITE_URL,
 	openGraphImage: "/open-graph/default.jpg",
 	twitterImage: "/open-graph/default.jpg",
