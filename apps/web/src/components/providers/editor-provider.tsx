@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { EditorCore } from "@/core";
 import { useEditor } from "@/editor/use-editor";
+import { buildEditorPath } from "@/project/editor-path";
 import { useKeybindingsListener } from "@/actions/use-keybindings";
 import { useKeybindingsStore } from "@/actions/keybindings-store";
 import { useTimelineStore } from "@/timeline/timeline-store";
@@ -59,7 +60,7 @@ export function EditorProvider({ projectId, children }: EditorProviderProps) {
 						const newProjectId = await editor.project.createNewProject({
 							name: "Untitled Project",
 						});
-						router.replace(`/editor/${newProjectId}`);
+						router.replace(buildEditorPath({ projectId: newProjectId }));
 					} catch (_createErr) {
 						setError("Failed to create project");
 						setIsLoading(false);
