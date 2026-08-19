@@ -21,7 +21,9 @@ import {
 } from "@hugeicons/core-free-icons";
 
 export function AiKeysSettings() {
-	const { falApiKey, setFalApiKey, clearFalApiKey } = useAiSettingsStore();
+	const falApiKey = useAiSettingsStore((s) => s.falApiKey);
+	const setFalApiKey = useAiSettingsStore((s) => s.setFalApiKey);
+	const clearFalApiKey = useAiSettingsStore((s) => s.clearFalApiKey);
 	const [draftKey, setDraftKey] = useState(falApiKey);
 	const [showKey, setShowKey] = useState(false);
 

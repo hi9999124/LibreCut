@@ -13,7 +13,7 @@ import { EffectsView } from "@/effects/components/assets-view";
 import { AiGenerationView } from "@/ai/components/assets-view";
 
 export function AssetsPanel() {
-	const { activeTab } = useAssetsPanelStore();
+	const activeTab = useAssetsPanelStore((s) => s.activeTab);
 
 	const viewMap: Record<Tab, React.ReactNode> = {
 		media: <MediaView />,

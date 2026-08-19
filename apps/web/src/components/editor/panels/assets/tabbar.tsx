@@ -15,7 +15,8 @@ import {
 } from "@/components/editor/panels/assets/assets-panel-store";
 
 export function TabBar() {
-	const { activeTab, setActiveTab } = useAssetsPanelStore();
+	const activeTab = useAssetsPanelStore((s) => s.activeTab);
+	const setActiveTab = useAssetsPanelStore((s) => s.setActiveTab);
 	const [showTopFade, setShowTopFade] = useState(false);
 	const [showBottomFade, setShowBottomFade] = useState(false);
 	const scrollRef = useRef<HTMLDivElement>(null);

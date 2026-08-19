@@ -64,15 +64,13 @@ export function MediaView() {
 	const mediaFiles = useEditor((e) => e.media.getAssets());
 	const activeProject = useEditor((e) => e.project.getActive());
 
-	const {
-		mediaViewMode,
-		setMediaViewMode,
-		highlightMediaId,
-		clearHighlight,
-		mediaSortBy,
-		mediaSortOrder,
-		setMediaSort,
-	} = useAssetsPanelStore();
+	const mediaViewMode = useAssetsPanelStore((s) => s.mediaViewMode);
+	const setMediaViewMode = useAssetsPanelStore((s) => s.setMediaViewMode);
+	const highlightMediaId = useAssetsPanelStore((s) => s.highlightMediaId);
+	const clearHighlight = useAssetsPanelStore((s) => s.clearHighlight);
+	const mediaSortBy = useAssetsPanelStore((s) => s.mediaSortBy);
+	const mediaSortOrder = useAssetsPanelStore((s) => s.mediaSortOrder);
+	const setMediaSort = useAssetsPanelStore((s) => s.setMediaSort);
 
 	const [isProcessing, setIsProcessing] = useState(false);
 	const [progress, setProgress] = useState(0);

@@ -20,7 +20,8 @@ export function PropertiesPanel() {
 	useEditor((e) => e.scenes.getActiveSceneOrNull());
 	useEditor((e) => e.media.getAssets());
 	const { selectedElements } = useElementSelection();
-	const { activeTabPerType, setActiveTab } = usePropertiesStore();
+	const activeTabPerType = usePropertiesStore((s) => s.activeTabPerType);
+	const setActiveTab = usePropertiesStore((s) => s.setActiveTab);
 
 	if (selectedElements.length === 0) {
 		return (

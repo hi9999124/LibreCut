@@ -117,8 +117,9 @@ export function AiGenerationView() {
 	const imageAssets = useEditor((e) =>
 		e.media.getAssets().filter((asset) => asset.type === "image"),
 	);
-	const { falApiKey } = useAiSettingsStore();
-	const { setActiveTab, requestRevealMedia } = useAssetsPanelStore();
+	const falApiKey = useAiSettingsStore((s) => s.falApiKey);
+	const setActiveTab = useAssetsPanelStore((s) => s.setActiveTab);
+	const requestRevealMedia = useAssetsPanelStore((s) => s.requestRevealMedia);
 
 	const [mode, setMode] = useState<AiGenerationMode>("text-to-video");
 	const [modelId, setModelId] = useState(DEFAULT_AI_VIDEO_MODEL_ID);
