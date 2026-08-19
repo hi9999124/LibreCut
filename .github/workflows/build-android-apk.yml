@@ -144,4 +144,4 @@ jobs:
           files: |
             android/app-release-signed.apk
             android/**/*.aab
-          draft: true
+          draft: false

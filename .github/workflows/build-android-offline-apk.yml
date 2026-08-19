@@ -64,4 +64,4 @@ jobs:
             distribution. Accounts and anything server-backed (sounds search) are
             unavailable in this build; editing itself runs entirely on-device.
           files: apps/mobile-android/android/app/build/outputs/apk/debug/app-debug.apk
-          draft: true
+          draft: false
