@@ -1,0 +1,131 @@
+name: Build Android APK (TWA)
+
+# Packages the deployed LibreCut web app as an installable Android APK using
+# a Trusted Web Activity (Bubblewrap). This is best-effort scaffolding: it
+# has not been exercised end-to-end in CI yet, since it needs a live HTTPS
+# deployment to point at. See docs/android-apk.md for how to run it and what
+# to check if a step needs adjusting for your deployment.
+#
+# Requires a live LibreCut deployment reachable at `site_url`, serving
+# /manifest.json and the icons it references.
+#
+# Optional secrets for a stable app identity across releases (recommended
+# once you're publishing updates, not required for a first build):
+#   ANDROID_KEYSTORE_BASE64   - base64-encoded .keystore file
+#   ANDROID_KEYSTORE_PASSWORD - keystore password
+#   ANDROID_KEY_ALIAS         - key alias inside the keystore
+#   ANDROID_KEY_PASSWORD      - key password (often same as keystore password)
+# Without these, a new signing key is generated on every run, so each build
+# is installable standalone but Android won't treat successive runs as
+# updates to the same app.
+
+on:
+  workflow_dispatch:
+    inputs:
+      site_url:
+        description: "Live HTTPS URL where LibreCut is deployed (e.g. https://librecut.example.com)"
+        required: true
+      package_id:
+        description: "Android application ID"
+        required: false
+        default: "app.librecut.twa"
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Bubblewrap CLI
+        run: npm install -g @bubblewrap/cli
+
+      - name: Prepare TWA manifest
+        working-directory: android
+        env:
+          SITE_URL: ${{ github.event.inputs.site_url }}
+          PACKAGE_ID: ${{ github.event.inputs.package_id }}
+        run: |
+          set -euo pipefail
+          site_url="${SITE_URL%/}"
+          site_host="$(echo "$site_url" | sed -E 's#^https?://##' | cut -d/ -f1)"
+          sed \
+            -e "s#__SITE_URL__#${site_url}#g" \
+            -e "s#__SITE_HOST__#${site_host}#g" \
+            twa-manifest.template.json > twa-manifest.json
+          # Allow overriding the default package id from the workflow input.
+          node -e "
+            const fs = require('fs');
+            const path = 'twa-manifest.json';
+            const manifest = JSON.parse(fs.readFileSync(path, 'utf8'));
+            manifest.packageId = process.env.PACKAGE_ID || manifest.packageId;
+            fs.writeFileSync(path, JSON.stringify(manifest, null, 2));
+          "
+
+      - name: Set up signing key from secrets
+        if: ${{ secrets.ANDROID_KEYSTORE_BASE64 != '' }}
+        working-directory: android
+        run: |
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android.keystore
+          echo "ANDROID_KEYSTORE_PASSWORD=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> "$GITHUB_ENV"
+          echo "ANDROID_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }}" >> "$GITHUB_ENV"
+
+      - name: Generate a fresh signing key (no persistent key configured)
+        if: ${{ secrets.ANDROID_KEYSTORE_BASE64 == '' }}
+        working-directory: android
+        run: |
+          keytool -genkeypair -v \
+            -keystore android.keystore \
+            -alias librecut \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -storepass "librecut-temp-key" \
+            -keypass "librecut-temp-key" \
+            -dname "CN=LibreCut, OU=LibreCut, O=LibreCut, L=Unknown, S=Unknown, C=US"
+          echo "ANDROID_KEYSTORE_PASSWORD=librecut-temp-key" >> "$GITHUB_ENV"
+          echo "ANDROID_KEY_PASSWORD=librecut-temp-key" >> "$GITHUB_ENV"
+
+      - name: Build signed APK
+        working-directory: android
+        run: |
+          bubblewrap build \
+            --skipPwaValidation \
+            --password="$ANDROID_KEYSTORE_PASSWORD" \
+            --keyPassword="$ANDROID_KEY_PASSWORD"
+
+      - name: Locate build output
+        working-directory: android
+        run: find . -iname "*.apk" -o -iname "*.aab"
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: librecut-android-apk
+          path: |
+            android/app-release-signed.apk
+            android/**/*.aab
+          if-no-files-found: warn
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: android-build-${{ github.run_number }}
+          name: LibreCut Android build ${{ github.run_number }}
+          body: |
+            Unsigned-for-updates test build of LibreCut for Android, packaged from
+            ${{ github.event.inputs.site_url }} as a Trusted Web Activity.
+            ${{ secrets.ANDROID_KEYSTORE_BASE64 == '' && 'Built with a freshly generated, non-persistent signing key: this release will NOT install as an update over a previous one. Set the ANDROID_KEYSTORE_* secrets for stable updates.' || '' }}
+          files: |
+            android/app-release-signed.apk
+            android/**/*.aab
+          draft: true

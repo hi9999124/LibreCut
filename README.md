@@ -146,6 +146,15 @@ The app will be available at [http://localhost:3100](http://localhost:3100).
 3. Open the **AI video** tab, choose text-to-video or image-to-video, write a prompt, and hit **Generate video**. Finished clips are imported straight into your media library and can be added to the timeline with one click.
 4. Only a couple of models are pinned by default (Seedance 1.0 Pro). fal.ai's catalog moves fast, so pick **Custom model…** and paste any model path from [fal.ai/models](https://fal.ai/models) — including newer Seedance releases — to use it instead.
 
+## Android
+
+There's no native Android app yet, but `.github/workflows/build-android-apk.yml`
+can package a **live deployment** of LibreCut into an installable `.apk` as a
+Trusted Web Activity. It needs a public HTTPS URL to point at, so it's not
+runnable until LibreCut is deployed somewhere. See
+[`docs/android-apk.md`](docs/android-apk.md) for how to run it and download
+the result.
+
 ## Contributing
 
 We welcome contributions! While we're actively developing and refactoring certain areas, there are plenty of opportunities to contribute effectively.

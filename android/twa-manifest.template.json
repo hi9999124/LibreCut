@@ -1,0 +1,38 @@
+{
+	"packageId": "app.librecut.twa",
+	"host": "__SITE_HOST__",
+	"name": "LibreCut",
+	"launcherName": "LibreCut",
+	"display": "standalone",
+	"orientation": "default",
+	"themeColor": "#000000",
+	"navigationColor": "#000000",
+	"navigationColorDark": "#000000",
+	"navigationDividerColor": "#000000",
+	"navigationDividerColorDark": "#000000",
+	"backgroundColor": "#000000",
+	"enableNotifications": false,
+	"startUrl": "/",
+	"webManifestUrl": "__SITE_URL__/manifest.json",
+	"iconUrl": "__SITE_URL__/icons/android-icon-192x192.png",
+	"maskableIconUrl": "__SITE_URL__/icons/android-icon-192x192.png",
+	"splashScreenFadeOutDuration": 300,
+	"signingKey": {
+		"path": "./android.keystore",
+		"alias": "librecut"
+	},
+	"appVersionName": "1.0.0",
+	"appVersionCode": 1,
+	"shortcuts": [],
+	"generatorApp": "bubblewrap-cli",
+	"fallbackType": "customtabs",
+	"features": {},
+	"alphaDependencies": {
+		"enabled": false
+	},
+	"enableSiteSettingsShortcut": true,
+	"isChromeOSOnly": false,
+	"isMetaQuest": false,
+	"fullScopeUrl": "__SITE_URL__/",
+	"minSdkVersion": 21
+}
