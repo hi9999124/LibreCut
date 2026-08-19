@@ -1,5 +1,5 @@
 import type { MutableRefObject } from "react";
-import type { TAction } from "./definitions";
+import { ACTIONS, type TAction } from "./definitions";
 
 export type { TAction };
 
@@ -42,3 +42,25 @@ export type TActionHandlerOptions =
 	| MutableRefObject<boolean>
 	| boolean
 	| undefined;
+
+const ACTION_SET: ReadonlySet<string> = new Set(Object.keys(ACTIONS));
+
+/**
+ * Actions whose `TActionArgsMap` entry requires args (no `| undefined`).
+ * Keep this in sync with `TActionArgsMap` above -- it can't be derived at
+ * runtime since the `| undefined` distinction is erased with the types.
+ */
+const ACTIONS_REQUIRING_ARGS: ReadonlySet<TAction> = new Set([
+	"remove-media-asset",
+	"remove-media-assets",
+] satisfies TActionWithArgs[]);
+
+export function isAction(value: unknown): value is TAction {
+	return typeof value === "string" && ACTION_SET.has(value);
+}
+
+export function isActionWithOptionalArgs(
+	value: unknown,
+): value is TActionWithOptionalArgs {
+	return isAction(value) && !ACTIONS_REQUIRING_ARGS.has(value);
+}
