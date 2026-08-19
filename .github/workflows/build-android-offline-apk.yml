@@ -1,0 +1,62 @@
+name: Build Android APK (Offline app)
+
+# Builds a fully self-contained Android APK: a Capacitor shell around a
+# trimmed, static export of the editor (see docs/android-offline-app.md).
+# Unlike build-android-apk.yml (a Trusted Web Activity wrapping a live
+# deployment), this needs no live URL and no deployment -- everything it
+# needs ships inside the APK. Server-backed features (accounts, sounds
+# search) aren't available in this build; the editor itself is IndexedDB/
+# WASM-based and works without a backend.
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76
+        with:
+          bun-version: 1.2.18
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Build static export and sync into the native Android project
+        run: bash scripts/build-android-offline.sh
+
+      - name: Build debug APK
+        working-directory: apps/mobile-android/android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Locate build output
+        working-directory: apps/mobile-android/android
+        run: find . -iname "*.apk"
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: librecut-android-offline-apk
+          path: apps/mobile-android/android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: android-offline-${{ github.run_number }}
+          name: LibreCut Android (offline) build ${{ github.run_number }}
+          body: |
+            Offline Android build of LibreCut's editor, packaged with Capacitor.
+            Debug-signed (Android's default debug key) -- fine to install and try,
+            but re-signing with a real release key is recommended before wider
+            distribution. Accounts and anything server-backed (sounds search) are
+            unavailable in this build; editing itself runs entirely on-device.
+          files: apps/mobile-android/android/app/build/outputs/apk/debug/app-debug.apk
+          draft: true

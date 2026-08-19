@@ -148,12 +148,18 @@ The app will be available at [http://localhost:3100](http://localhost:3100).
 
 ## Android
 
-There's no native Android app yet, but `.github/workflows/build-android-apk.yml`
-can package a **live deployment** of LibreCut into an installable `.apk` as a
-Trusted Web Activity. It needs a public HTTPS URL to point at, so it's not
-runnable until LibreCut is deployed somewhere. See
-[`docs/android-apk.md`](docs/android-apk.md) for how to run it and download
-the result.
+Two ways to get an Android build, depending on whether LibreCut is deployed anywhere:
+
+- **Offline app** (no deployment needed) — packages the editor itself into a
+  self-contained APK with [Capacitor](https://capacitorjs.com/); accounts and
+  anything server-backed (like sounds search) aren't available, but editing
+  works fully on-device. Run **Actions → Build Android APK (Offline app)**.
+  See [`docs/android-offline-app.md`](docs/android-offline-app.md).
+- **Full app, live-hosted** — wraps a live deployment as a Trusted Web
+  Activity, so every feature (including accounts) works, but it needs
+  LibreCut deployed somewhere with a public HTTPS URL first. Run
+  **Actions → Build Android APK (TWA)** with that URL. See
+  [`docs/android-apk.md`](docs/android-apk.md).
 
 ## Contributing
 
